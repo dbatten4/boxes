@@ -1,5 +1,8 @@
-Box = function(length, width, height) {
-  this.dimensions = [length, width, height];
+Box = function() {
+};
+
+Box.prototype.receiveDimensions = function(length, width, height) {
+  return this.dimensions = [length, width, height];
 };
 
 Box.prototype.calculateSurfaceArea = function() {
