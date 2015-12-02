@@ -99,8 +99,11 @@ describe("Order", function() {
 
   describe("completing an order", function() {
 
-    it("should correctly calculate the unit cost with no optional extras", function() {
+    beforeEach(function() {
       order.makeSelection("A Grade");
+    });
+
+    it("should correctly calculate the unit cost with no optional extras", function() {
       order.makeSelection("3 colours");
       order.finaliseOrder();
       expect(order.unitCost).toEqual(0.09);
@@ -116,7 +119,6 @@ describe("Order", function() {
     });
 
     it("should correctly calculate the total cost with optional extras", function() {
-      order.makeSelection("A Grade");
       order.makeSelection("3 colours");
       order.makeSelection("Handles");
       order.makeSelection("Reinforced bottom");
@@ -125,7 +127,6 @@ describe("Order", function() {
     });
 
     it("should correctly calculate the total cost if there is a discount", function() {
-      order.makeSelection("A Grade");
       order.makeSelection("FantasticBoxCo branding");
       order.finaliseOrder();
       expect(order.totalCost).toEqual(0.04);

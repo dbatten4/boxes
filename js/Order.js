@@ -24,27 +24,36 @@ Order.prototype.makeSelection = function(selection) {
   if(selection == "Handles" || selection == "Reinforced bottom") {
     this.optionalExtras.push(selection);
   } else {
-    return this.selections.push(selection);
+    this.selections.push(selection);
   };
 };
 
 Order.prototype.finaliseOrder = function() {
-  var surfaceArea = this.box.surfaceArea;
-  var total = 0;
-  var optionsTotal = 0;
-  for(var i = 0; i < this.selections.length; i++) {
-    total += surfaceArea * PRICE_OPTIONS[this.selections[i]];
-  };
-  this.unitCost = parseFloat(total.toFixed(2));
+  this.calculateUnitCost();
+  this.totalCost = this.unitCost * this.quantity;
   if(this.optionalExtras.length > 0) {
-    for(var i = 0; i < this.optionalExtras.length; i++) {
-      optionsTotal += this.quantity * PRICE_OPTIONS[this.optionalExtras[i]];
-    };
+    this.calculateOptionalExtrasCost();
   };
-  this.totalCost = this.unitCost * this.quantity + parseFloat(optionsTotal.toFixed(2));
   if(this.isDiscounted) {
     this.totalCost = parseFloat((this.totalCost * DISCOUNT).toFixed(2));
   };
+};
+
+Order.prototype.calculateUnitCost = function() {
+  var surfaceArea = this.box.surfaceArea;
+  var total = 0;
+  for(var i = 0; i < this.selections.length; i++) {
+    total += surfaceArea * PRICE_OPTIONS[this.selections[i]];
+  };
+  return this.unitCost = parseFloat(total.toFixed(2));
+};
+
+Order.prototype.calculateOptionalExtrasCost = function() {
+  var optionsTotal = 0;
+  for(var i = 0; i < this.optionalExtras.length; i++) {
+    optionsTotal += this.quantity * PRICE_OPTIONS[this.optionalExtras[i]];
+  };
+  return this.totalCost = this.unitCost * this.quantity + parseFloat(optionsTotal.toFixed(2));
 };
 
 Order.prototype.errorChecking = function(selection) {
