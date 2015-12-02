@@ -2,7 +2,8 @@ Box = function() {
 };
 
 Box.prototype.receiveDimensions = function(length, width, height) {
-  return this.dimensions = [length, width, height];
+  this.dimensions = [length, width, height];
+  return this.calculateSurfaceArea();
 };
 
 Box.prototype.calculateSurfaceArea = function() {

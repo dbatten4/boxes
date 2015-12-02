@@ -13,7 +13,6 @@ describe("Box", function() {
 
   it("should be able to calculate the surface area", function() {
     box.receiveDimensions(1,2,3);
-    box.calculateSurfaceArea();
     expect(box.surfaceArea).toEqual(22);
   });
 
