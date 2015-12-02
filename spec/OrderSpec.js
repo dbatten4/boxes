@@ -15,25 +15,87 @@ describe("Order", function() {
     expect(order.quantity).toEqual(1);
   });
 
-  it("should be able to select a cardboard grade of grade A", function() {
-    order.selectCardBoardGrade("A Grade");
-    expect(order.priceSelections).toEqual(["A Grade"]);
+  describe("selecting cardboard grade", function() {
+
+    it("should be able to select a cardboard grade of grade A", function() {
+      order.makeSelection("A Grade");
+      expect(order.selections).toEqual(["A Grade"]);
+    });
+
+    it("should be able to select a cardboard grade of grade B", function() {
+      order.makeSelection("B Grade");
+      expect(order.selections).toEqual(["B Grade"]);
+    });
+
+    it("should be able to select a cardboard grade of grade C", function() {
+      order.makeSelection("C Grade");
+      expect(order.selections).toEqual(["C Grade"]);
+    });
+
+    it("should not allow grade C selected if box is more than 2M^2", function() {
+      var order2 = new Order(Box);
+      order2.newOrder(1,2,3,4,1);
+      expect(function(){order2.makeSelection("C Grade");}).toThrow("Must be less than 2M^2");
+    });
+
   });
 
-  it("should be able to select a cardboard grade of grade B", function() {
-    order.selectCardBoardGrade("B Grade");
-    expect(order.priceSelections).toEqual(["B Grade"]);
+  describe("selecting print quality", function() {
+
+    beforeEach(function() {
+      order.makeSelection("A Grade");
+    });
+
+    it("should be able to select 3 colour print quality", function() {
+      order.makeSelection("3 colours");
+      expect(order.selections).toEqual(["A Grade", "3 colours"]);
+    });
+
+    it("should be able to select 2 colour print quality", function() {
+      order.makeSelection("2 colours");
+      expect(order.selections).toEqual(["A Grade", "2 colours"]);
+    });
+
+    it("should be able to select Black only print quality", function() {
+      order.makeSelection("Black only");
+      expect(order.selections).toEqual(["A Grade", "Black only"]);
+    });
+
+    it("should be able to select no printing", function() {
+      order.makeSelection("No printing");
+      expect(order.selections).toEqual(["A Grade", "No printing"]);
+    });
+
+    it("should trigger discount if fantasticboxco branding is selected", function() {
+      order.makeSelection("FantasticBoxCo branding");
+      expect(order.isDiscounted).toBe(true);
+    });
+
   });
 
-  it("should be able to select a cardboard grade of grade C", function() {
-    order.selectCardBoardGrade("C Grade");
-    expect(order.priceSelections).toEqual(["C Grade"]);
+  describe("selecting optional extras", function() {
+
+    it("should be able to add handles", function() {
+      order.makeSelection("A Grade");
+      order.makeSelection("3 colours");
+      order.makeSelection("Handles");
+      expect(order.selections).toEqual(["A Grade", "3 colours", "Handles"]);
+    });
+
+    it("should be able to add a reinforced bottom", function() {
+      order.makeSelection("A Grade");
+      order.makeSelection("3 colours");
+      order.makeSelection("Reinforced bottom");
+      expect(order.selections).toEqual(["A Grade", "3 colours", "Reinforced bottom"]);
+    });
+
+    it("should not be able to add reinforced bottom unless grade A cardboard is selected", function() {
+      order.makeSelection("B Grade");
+      order.makeSelection("3 colours");
+      expect(function(){order.makeSelection("Reinforced bottom");}).toThrow("Only available for A Grade cardboard");
+    });
+
   });
 
-  it("should not allow grade C selected if box is more than 2M^2", function() {
-    var order2 = new Order(Box);
-    order2.newOrder(1,2,3,4,1);
-    expect(function(){order2.selectCardBoardGrade("C Grade");}).toThrow("Must be less than 2M^2");
-  });
 
-});
+ });
