@@ -6,9 +6,9 @@ Order = function(box) {
 };
 
 var PRICE_OPTIONS = {
-  "A Grade": 0.2, "B Grade": 0.1, "C Grade": 0.05,
-  "3 colours": 0.2, "2 colours": 0.1, "Black only": 0.05, "No printing": 0.00, "FantasticBoxCo branding": 0.00,
-  "Handles": 0.1, "Reinforced bottom": 0.05
+  "A": 0.2, "B": 0.1, "C": 0.05,
+  "3-colour": 0.2, "2-colour": 0.1, "black-only": 0.05, "no-printing": 0.00, "FantasticBoxCo-branding": 0.00,
+  "handles": 0.1, "reinforced-bottom": 0.05
 };
 
 var DISCOUNT = 0.95;
@@ -20,8 +20,8 @@ Order.prototype.newOrder = function(length, width, height, quantity) {
 
 Order.prototype.makeSelection = function(selection) {
   this.errorChecking(selection);
-  if(selection == "FantasticBoxCo branding") { this.isDiscounted = true }
-  if(selection == "Handles" || selection == "Reinforced bottom") {
+  if(selection == "FantasticBoxCo-branding") { this.isDiscounted = true }
+  if(selection == "handles" || selection == "reinforced-bottom") {
     this.optionalExtras.push(selection);
   } else {
     this.selections.push(selection);
@@ -57,10 +57,10 @@ Order.prototype.calculateOptionalExtrasCost = function() {
 };
 
 Order.prototype.errorChecking = function(selection) {
-  if(selection == "C Grade" && this.box.surfaceArea > 2) {
+  if(selection == "C" && this.box.surfaceArea > 2) {
     throw "Must be less than 2M^2"
   };
-  if(selection == "Reinforced bottom" && !(this.selections.indexOf("A Grade") > -1)) {
+  if(selection == "reinforced-bottom" && !(this.selections.indexOf("A") > -1)) {
     throw "Only available for A Grade cardboard";
   };
 };
