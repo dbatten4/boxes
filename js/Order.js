@@ -1,8 +1,9 @@
 Order = function(box) {
   this.box = new box;
-  this.selections = [];
-  this.optionalExtras = [];
-  this.isDiscounted = false;
+  this.isExtras = false;
+  this.selections = {
+    "Extras": []
+  };
 };
 
 var PRICE_OPTIONS = {
@@ -10,7 +11,12 @@ var PRICE_OPTIONS = {
   "3-color": 0.2, "2-color": 0.1, "black-only": 0.05, "no-printing": 0.00, "FantasticBoxCo-branding": 0.00,
   "handles": 0.1, "reinforced-bottom": 0.05
 };
-
+var NAME_CONVERSIONS = {
+  "A": "A Grade", "B": "B Grade", "C": "C Grade",
+  "3-color": "3 colours", "2-color": "2 colours", "black-only": "Black only",
+  "no-printing": "No printing", "FantasticBoxCo-branding": "FantasticBoxCo branding",
+  "handles": "Handles", "reinforced-bottom": "Reinforced bottom"
+};
 var DISCOUNT = 0.95;
 
 Order.prototype.newOrder = function(length, width, height, quantity) {
@@ -18,53 +24,72 @@ Order.prototype.newOrder = function(length, width, height, quantity) {
   return this.quantity = quantity;
 };
 
-Order.prototype.makeSelection = function(selection) {
-  this.errorChecking(selection);
+Order.prototype.selectGrade = function(selection) {
+  this.gradeErrorCheck(selection);
+  return this.selections["Grade"] = selection;
+};
+
+Order.prototype.selectQuality = function(selection) {
   if(selection == "FantasticBoxCo-branding") { this.isDiscounted = true }
-  if(selection == "handles" || selection == "reinforced-bottom") {
-    this.optionalExtras.push(selection);
-  } else {
-    this.selections.push(selection);
-  };
+  return this.selections["Quality"] = selection;
+};
+
+Order.prototype.selectExtras = function(selection) {
+  this.extrasErrorCheck(selection);
+  this.isExtras = true;
+  return this.selections["Extras"].push(selection);
 };
 
 Order.prototype.finaliseOrder = function() {
   this.calculateUnitCost();
-  this.totalCost = this.unitCost * this.quantity;
-  if(this.optionalExtras.length > 0) {
-    this.calculateOptionalExtrasCost();
-  };
-  if(this.isDiscounted) {
-    this.totalCost = parseFloat((this.totalCost * DISCOUNT).toFixed(2));
-  };
+  var totalCost = this.unitCost * this.quantity;
+  totalCost = this.extasCondition(totalCost);
+  if(this.isDiscounted) { totalCost = totalCost * DISCOUNT };
+  return this.totalCost = parseFloat(totalCost.toFixed(2));
 };
 
 Order.prototype.calculateUnitCost = function() {
   var surfaceArea = this.box.surfaceArea;
-  var total = 0;
-  for(var i = 0; i < this.selections.length; i++) {
-    total += surfaceArea * PRICE_OPTIONS[this.selections[i]];
-  };
-  return this.unitCost = parseFloat(total.toFixed(2));
+  this.unitCost = 0;
+  this.unitCost += surfaceArea * PRICE_OPTIONS[this.selections["Grade"]];
+  this.unitCost += surfaceArea * PRICE_OPTIONS[this.selections["Quality"]];
+  return this.unitCost;
 };
 
-Order.prototype.calculateOptionalExtrasCost = function() {
-  var optionsTotal = 0;
-  for(var i = 0; i < this.optionalExtras.length; i++) {
-    optionsTotal += this.quantity * PRICE_OPTIONS[this.optionalExtras[i]];
+Order.prototype.extasCondition = function(totalCost) {
+  if(this.selections["Extras"].length > 0) {
+    totalCost = this.calculateExtrasCost(totalCost);
   };
-  return this.totalCost = this.unitCost * this.quantity + parseFloat(optionsTotal.toFixed(2));
+  return totalCost;
 };
 
-Order.prototype.errorChecking = function(selection) {
+Order.prototype.calculateExtrasCost = function(totalCost) {
+  for(var i = 0; i < this.selections["Extras"].length; i++) {
+    totalCost += this.quantity * PRICE_OPTIONS[this.selections["Extras"][i]];
+  };
+  return totalCost;
+};
+
+Order.prototype.gradeErrorCheck = function(selection) {
   if(selection == "C" && this.box.surfaceArea > 2) {
     var errorMessage = "Must be less than 2M^2"
-    throw errorMessage;
     window.alert(errorMessage);
+    throw errorMessage;
   };
-  if(selection == "reinforced-bottom" && !(this.selections.indexOf("A") > -1)) {
+};
+
+Order.prototype.extrasErrorCheck = function(selection) {
+  if(selection == "reinforced-bottom" && this.selections["Grade"] != "A") {
     var errorMessage =  "Only available for A Grade cardboard";
-    throw errorMessage;
     window.alert(errorMessage);
+    throw errorMessage;
   };
+};
+
+Order.prototype.nameConverter = function(input) {
+  return output = NAME_CONVERSIONS[input];
+};
+
+Order.prototype.isOptionalExtras = function() {
+  return this.isExtras;
 };
