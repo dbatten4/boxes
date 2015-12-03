@@ -15,5 +15,18 @@ $(document).ready(function() {
     order.makeSelection(value);
   });
 
+  $('#quality').click(function() {
+    var value = $("input:radio[name=print-quality]:checked").val();
+    order.makeSelection(value);
+  });
+
+  $('#finish').click(function() {
+    $.each($("input:checkbox[name=optional-extras]:checked"), function() {
+      var value = $(this).val();
+      order.makeSelection(value);
+    });
+    order.finaliseOrder();
+  });
+
 
 });
