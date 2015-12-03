@@ -58,9 +58,13 @@ Order.prototype.calculateOptionalExtrasCost = function() {
 
 Order.prototype.errorChecking = function(selection) {
   if(selection == "C" && this.box.surfaceArea > 2) {
-    throw "Must be less than 2M^2"
+    var errorMessage = "Must be less than 2M^2"
+    throw errorMessage;
+    window.alert(errorMessage);
   };
   if(selection == "reinforced-bottom" && !(this.selections.indexOf("A") > -1)) {
-    throw "Only available for A Grade cardboard";
+    var errorMessage =  "Only available for A Grade cardboard";
+    throw errorMessage;
+    window.alert(errorMessage);
   };
 };

@@ -8,7 +8,7 @@ describe("Order", function() {
   });
 
   it("should be able to receive an order of a box", function() {
-    expect(order.box.dimensions).toEqual([0.1,0.2,0.3]);
+    expect(order.box.surfaceArea).toEqual(0.22);
   });
 
   it("should be able to receive an order of a specified quantity", function() {
@@ -104,7 +104,7 @@ describe("Order", function() {
     });
 
     it("should correctly calculate the unit cost with no optional extras", function() {
-      order.makeSelection("3-colour");
+      order.makeSelection("3-color");
       order.finaliseOrder();
       expect(order.unitCost).toEqual(0.09);
     });
@@ -113,13 +113,13 @@ describe("Order", function() {
       var order2 = new Order(Box);
       order2.newOrder(0.1,0.2,0.3,3);
       order2.makeSelection("A");
-      order2.makeSelection("3-colour");
+      order2.makeSelection("3-color");
       order2.finaliseOrder();
       expect(order2.totalCost).toEqual(0.27);
     });
 
     it("should correctly calculate the total cost with optional extras", function() {
-      order.makeSelection("3-colour");
+      order.makeSelection("3-color");
       order.makeSelection("handles");
       order.makeSelection("reinforced-bottom");
       order.finaliseOrder();
