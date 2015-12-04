@@ -82,7 +82,7 @@ Order.prototype.dimensionsErrorCheck = function(length, width, height, quantity)
 Order.prototype.gradeErrorCheck = function(selection) {
   if(selection == "C" && this.box.surfaceArea > 2) {
     var errorMessage = "Must be less than 2M^2"
-    window.alert(errorMessage);
+    alert(errorMessage);
     throw errorMessage;
   };
 };
@@ -90,7 +90,7 @@ Order.prototype.gradeErrorCheck = function(selection) {
 Order.prototype.extrasErrorCheck = function(selection) {
   if(selection == "reinforced-bottom" && this.selections["Grade"] != "A") {
     var errorMessage = "Only available for A Grade cardboard";
-    window.alert(errorMessage);
+    alert(errorMessage);
     throw errorMessage;
   };
   if(this.selections["Extras"].indexOf(selection) > -1) {
