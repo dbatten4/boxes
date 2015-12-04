@@ -20,6 +20,7 @@ var NAME_CONVERSIONS = {
 var DISCOUNT = 0.95;
 
 Order.prototype.newOrder = function(length, width, height, quantity) {
+  this.dimensionsErrorCheck(length, width, height, quantity);
   this.box.receiveDimensions(length, width, height);
   return this.quantity = quantity;
 };
@@ -68,6 +69,14 @@ Order.prototype.calculateExtrasCost = function(totalCost) {
     totalCost += this.quantity * PRICE_OPTIONS[this.selections["Extras"][i]];
   };
   return totalCost;
+};
+
+Order.prototype.dimensionsErrorCheck = function(length, width, height, quantity) {
+  if(length === 0 || width === 0 || height === 0 || quantity === 0) {
+    var errorMessage = "Must not have a 0";
+    alert(errorMessage);
+    throw errorMessage;
+  };
 };
 
 Order.prototype.gradeErrorCheck = function(selection) {

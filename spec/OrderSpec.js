@@ -15,6 +15,30 @@ describe("Order", function() {
     expect(order.quantity).toEqual(1);
   });
 
+  describe("checking the input", function() {
+
+    beforeEach(function() {
+      order2 = new Order(Box);
+    });
+
+    it("should not be able to receive a length of 0", function() {
+      expect(function(){order.newOrder(0,1,1,1);}).toThrow("Must not have a 0");
+    });
+
+    it("should not be able to receive a width of 0", function() {
+      expect(function(){order.newOrder(1,0,1,1);}).toThrow("Must not have a 0");
+    });
+
+    it("should not be able to receive a height of 0", function() {
+      expect(function(){order.newOrder(1,1,0,1);}).toThrow("Must not have a 0");
+    });
+
+    it("should not be able to receive a quantity of 0", function() {
+      expect(function(){order.newOrder(1,1,1,0);}).toThrow("Must not have a 0");
+    });
+
+  });
+
   describe("selecting cardboard grade", function() {
 
     it("should be able to select a cardboard grade of grade A", function() {

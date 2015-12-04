@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
   <meta name="author" content="@alliants">
-  <link rel="stylesheet" media="all" href="/css/application.css">
+  <link rel="stylesheet" media="all" href="css/application.css">
   <link href='https://fonts.googleapis.com/css?family=Patua+One' rel='stylesheet' type='text/css'>
   <link rel="shortcut icon" href="/favicon.ico">
 </head>
@@ -27,13 +27,13 @@
               <h3 class="step-heading">Dimensions &amp; Quantity</h3>
               <dl>
                 <dt>Width:</dt>
-                <dd>0.0m</dd>
+                <dd id="step-box-width">0.0m</dd>
                 <dt>Height:</dt>
-                <dd>0.0m</dd>
+                <dd id="step-box-height">0.0m</dd>
                 <dt>Length:</dt>
-                <dd>0.0m</dd>
+                <dd id="step-box-length">0.0m</dd>
                 <dt>Quantity:</dt>
-                <dd>0</dd>
+                <dd id="step-box-quantity">0</dd>
               </dl>
             </a>
           </li>
@@ -41,21 +41,24 @@
             <a href="#step-2" class="step step-2">
               <div class="step-number">2</div>
               <h3 class="step-heading">Cardboard Grade</h3>
-              <span class="step-value">-</span>
+              <span class="step-value" id="step-cardboard-grade">-</span>
             </a>
           </li>
           <li>
             <a href="#step-3" class="step step-3">
               <div class="step-number">3</div>
               <h3 class="step-heading">Print Quality</h3>
-              <span class="step-value">-</span>
+              <span class="step-value" id="step-print-quality">-</span>
             </a>
           </li>
           <li>
             <a href="#step-4" class="step step-4">
               <div class="step-number">4</div>
               <h3 class="step-heading">Optional Extras</h3>
-              <span class="step-value">-</span>
+              <span class="step-value"
+                id="step-extras-handles">Handles</span></br>
+              <span class="step-value" id="step-extras-reinforced">Reinforced
+                Bottom</span>
             </a>
           </li>
           <li>
