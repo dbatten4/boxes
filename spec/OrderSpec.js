@@ -62,6 +62,11 @@ describe("Order", function() {
       expect(order.selections["Quality"]).toEqual("no-printing");
     });
 
+    it("should be able to select fantasticboxco branding", function() {
+      order.selectQuality("FantasticBoxCo-branding");
+      expect(order.selections["Quality"]).toEqual("FantasticBoxCo-branding");
+    });
+
     it("should trigger discount if fantasticboxco branding is selected", function() {
       order.selectQuality("FantasticBoxCo-branding");
       expect(order.isDiscounted).toBe(true);
@@ -96,6 +101,11 @@ describe("Order", function() {
       expect(order.isOptionalExtras()).toBe(true);
     });
 
+    it("should not be able to add the same extra twice", function() {
+      order.selectExtras("handles");
+      expect(function(){order.selectExtras("handles");}).toThrow("Already added");
+    });
+
     it("should not be able to add reinforced bottom unless grade A cardboard is selected", function() {
       order.selectGrade("B");
       expect(function(){order.selectExtras("reinforced-bottom");}).toThrow("Only available for A Grade cardboard");
@@ -108,24 +118,22 @@ describe("Order", function() {
     beforeEach(function() {
       order = new Order(Box);
       order.newOrder(1,2,3,2);
+      order.selectGrade("A");
     });
 
     it("should correctly calculate the unit cost with no optional extras", function() {
-      order.selectGrade("A");
       order.selectQuality("3-color");
       order.finaliseOrder();
       expect(order.unitCost).toEqual(8.80);
     });
 
     it("should correctly calculate the total cost with no optional extras", function() {
-      order.selectGrade("A");
       order.selectQuality("3-color");
       order.finaliseOrder();
       expect(order.totalCost).toEqual(17.6);
     });
 
     it("should correctly calculate the total cost with optional extras", function() {
-      order.selectGrade("A");
       order.selectQuality("3-color");
       order.selectExtras("handles");
       order.selectExtras("reinforced-bottom");
@@ -134,12 +142,10 @@ describe("Order", function() {
     });
 
     it("should correctly calculate the total cost if there is a discount", function() {
-      order.selectGrade("A");
       order.selectQuality("FantasticBoxCo-branding");
       order.selectExtras("handles");
       order.selectExtras("reinforced-bottom");
       order.finaliseOrder();
-      console.log(order.unitCost);
       expect(order.totalCost).toEqual(8.64);
     });
 

@@ -80,9 +80,12 @@ Order.prototype.gradeErrorCheck = function(selection) {
 
 Order.prototype.extrasErrorCheck = function(selection) {
   if(selection == "reinforced-bottom" && this.selections["Grade"] != "A") {
-    var errorMessage =  "Only available for A Grade cardboard";
+    var errorMessage = "Only available for A Grade cardboard";
     window.alert(errorMessage);
     throw errorMessage;
+  };
+  if(this.selections["Extras"].indexOf(selection) > -1) {
+    throw "Already added";
   };
 };
 

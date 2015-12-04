@@ -29,22 +29,38 @@ $(document).ready(function() {
       order.selectExtras(value);
     });
     order.finaliseOrder();
+    updateBreakDownText();
+    $('#total-cost').show();
+  });
+
+  updateBreakDownText = function() {
+    updateDimensionsText();
+    updateSelectionsText();
+    if(order.isOptionalExtras()){
+      updateOptionalExtrasText();
+    };
+    $('#order-total-cost').text((order.totalCost).toFixed(2));
+  };
+
+  updateDimensionsText = function() {
     $('#box-quantity').text(order.quantity);
     $('#box-width').text(order.box.width);
     $('#box-height').text(order.box.height);
     $('#box-length').text(order.box.length);
+  };
+
+  updateSelectionsText = function() {
     $('#box-cardboard-grade').text(order.nameConverter(order.selections["Grade"]));
     $('#box-print-quality').text(order.nameConverter(order.selections["Quality"]));
-    if(order.isOptionalExtras()){
-      $('#optional-extras').show();
-      for(var i = 0; i < order.selections["Extras"].length; i++) {
-        $('#optional-extra-' + i).text(order.nameConverter(order.selections["Extras"][i]));
-        $('#optional-extra-' + i).show();
-      };
+  };
+
+  updateOptionalExtrasText = function() {
+    $('#optional-extras').show();
+    for(var i = 0; i < order.selections["Extras"].length; i++) {
+      $('#optional-extra-' + i).text(order.nameConverter(order.selections["Extras"][i]));
+      $('#optional-extra-' + i).show();
     };
-    $('#order-total-cost').text((order.totalCost).toFixed(2));
-    $('#total-cost').show();
-  });
+  };
 
 
 });
